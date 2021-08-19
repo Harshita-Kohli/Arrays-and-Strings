@@ -1,0 +1,73 @@
+Given an string A. The only operation allowed is to insert  characters in the beginning of the string.
+
+Find how many minimum characters are needed to be inserted to make the string a palindrome string.
+
+
+
+
+Input Format
+
+The only argument given is string A.
+Output Format
+
+Return the minimum characters that are needed to be inserted to make the string a palindrome string.
+For Example
+
+Input 1:
+    A = "ABC"
+Output 1:
+    2
+    Explanation 1:
+        Insert 'B' at beginning, string becomes: "BABC".
+        Insert 'C' at beginning, string becomes: "CBABC".
+
+Input 2:
+    A = "AACECAAAA"
+Output 2:
+    2
+    Explanation 2:
+        Insert 'A' at beginning, string becomes: "AAACECAAAA".
+        Insert 'A' at beginning, string becomes: "AAAACECAAAA".
+        
+        <------------------------------------------------------>
+        //Explanation:
+// This is a derivative of Longest Prefix which is also a suffix(LPS)
+// Each index of the LPS array contains the longest prefix which is also a suffix. 
+// Now take the string and reverse of a string and combine them with a sentinel character
+// in between them and compute the LPS array of this combined string. 
+//Now take the last value of the LPS array and subtract it with the length of the original string, 
+//This will give us the minimum number of insertions required at the beginning of the string.
+// Time Complexity: O(n)
+
+
+int computeLPS(string &B){
+    int n = B.size(), j = 0;
+    int lps[n]; 
+    lps[0] = 0;
+    
+    int i = 1; 
+    while(i < n){
+        if(B[i] == B[j]){
+            j++;
+            lps[i] = j;
+            i++;
+        }
+        else{
+            if(j!=0){
+                j = lps[j-1];
+            }
+            else{
+                lps[i] = 0;
+                i++;
+            }
+        }
+    }
+    return n/2 - lps[n-1];
+}
+
+int Solution::solve(string A) {
+    string B = A; 
+    reverse(A.begin(), A.end());
+    B += "$" + A;
+    return computeLPS(B);
+}
