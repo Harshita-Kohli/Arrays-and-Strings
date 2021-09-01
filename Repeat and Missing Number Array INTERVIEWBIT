@@ -1,0 +1,55 @@
+There are certain problems which are asked in the interview to also check how you take care of overflows in your problem.
+
+This is one of those problems.
+
+Please take extra care to make sure that you are type-casting your ints to long properly and at all places. 
+Try to verify if your solution works if number of elements is as large as 10^5
+You are given a read only array of n integers from 1 to n.
+
+Each integer appears exactly once except A which appears twice and B which is missing.
+
+Return A and B.
+
+Note: Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+Note that in your output A should precede B.
+
+Example:
+
+Input:[3 1 2 5 3] 
+
+Output:[3, 4] 
+
+A = 3, B = 4
+<-------------------------->
+vector<int> Solution::repeatedNumber(const vector<int> &A) {
+    vector<int> ans;
+    int mp[1000005] = {0};
+    int n = A.size();
+    for(int i = 0;i<n;i++)
+    {
+      mp[A[i]]++;
+     }
+    for(int i = 1;i<=n;i++)
+     {
+        if(mp[i]==2)
+        {
+            ans.push_back(i);
+                break;  
+        }
+        
+     }
+     for(int i = 1;i<=n;i++)
+     {
+         if(mp[i]==0)
+         {
+            ans.push_back(i);
+            break;
+         }
+        
+     }
+    return ans;
+}
+
+
+
