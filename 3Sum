@@ -1,0 +1,56 @@
+Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+Notice that the solution set must not contain duplicate triplets.
+
+ Example 1:
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+
+Example 2:
+Input: nums = []
+Output: []
+
+Example 3:
+Input: nums = [0]
+Output: []
+ 
+Constraints:
+0 <= nums.length <= 3000
+-105 <= nums[i] <= 105
+<------------------------------------------------------------------------------------------------------->
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        vector<int>triplet;
+        vector<vector<int>>ans;
+        unordered_set<int> s;
+        int n = nums.size();
+        // if(n==0 || n==1) return vector<vector<int>>();//return empty vector
+        int l = 0;
+        int r = n-1;
+        for(int i = 0;i<n-2;i++)//fixing the first element
+        {
+            int target = -nums[i];
+            l = i+1;
+            r = n-1;
+            while(l<r)
+            {
+                int sum = nums[l]+nums[r];
+                if(sum<target) l++;//we want to increase our sum, so go towards right of the sorted array
+                
+                else if(sum>target) r--;
+                
+                else  //if(sum==target)
+                {
+                   triplet = {nums[i],nums[l],nums[r]}; 
+                    ans.push_back(triplet);
+//avoiding triplets with same second element(nums[l]) for the same first element (nums[i]), because it leads to duplicate triplets:
+                    while(l<r && nums[l]==triplet[1]) l++;
+                }
+            }
+            while(i<n-1 && nums[i]==nums[i+1]) i++;  
+        }
+        return ans;
+        
+    }
+};
